@@ -78,8 +78,38 @@ for i in range(len(cols)):
 ## Comparison function
 Now that the data is all set up and we have the weights prepared, we can begin with the comparison function.
 ![images/compare.png](./images/compare.png)
+The comparison functions iterates over each row of the synthetic data and compares it to one selected row of the real data. 
 
+``` py
+def compare(data1, data2, row_comp, weights, mini=False):
+    """
+    This is a comparsion function  
+    data1: First dataset for comparsion, 1 set row
+    data2: Second dataset for comparsion
+    row_comp: The row we want compared
+    mini: Chooses if the function returns the minimum value or not
+    """
+    lst = []
+    for i in range(len(data2)):
+        lst.append(similiar(data1, data2, i, row_comp, weights))
+    if mini:
+        lst = min(lst)
+    return lst
+```
+The comparison function also runs the similarity function into it which will be responsible for providing a numerical comparison of how similar the rows truly are. 
+ 
 ## Scoring
+The similiar() function works by comparing how similar the synthetic data is to the real data.
+``` Py
+def similiar(data1, data2, ind, row_comp, weights):
+    """
+    Computes how similiar the two datasets are 
+    """
+    score = 0
+    for i in range(len(data1.columns)):
+        score = score + (abs(data1.loc[row_comp,:][i] - data2.loc[ind,:][i]) * weights[i])
+    return score 
+```
 
 ## Ranking
 

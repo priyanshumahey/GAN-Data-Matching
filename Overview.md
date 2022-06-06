@@ -110,7 +110,12 @@ def similiar(data1, data2, ind, row_comp, weights):
         score = score + (abs(data1.loc[row_comp,:][i] - data2.loc[ind,:][i]) * weights[i])
     return score 
 ```
+We want this comparison function to work differently depending on which column the data falls under. Currently the data just takes the absolute difference of the datasets and then multiplies it by the correct corresponding weight. 
+
+We want the comparison function to change based on the numbers and what is present in that column. For now, we simply use the simple comparison function.
 
 ## Ranking
 
 ## Matching
+
+## Heatmaps

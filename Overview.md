@@ -46,4 +46,41 @@ def norm(data1):
 ```
 Using this, we end up with a finalized dataframe full of cleaned and normalized data that we can use for the rest of the project.
 ## Data Weighting
-Since the data will have different importance based on what column it's in, we add a weight factor to each column. Currently, the way this works is it assigns 
+Since the data will have different importance based on what column it's in, we add a weight factor to each column. Currently, the way this works is it assigns each column a high, medium or low weight.
+``` Py
+#Init
+weights =[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+
+high_weights =['Age', 'Number of sexual partners', 'First sexual intercourse',
+       'Num of pregnancies', 'Smokes']
+med_weights =['Smokes (years)', 'Smokes (packs/year)',
+       'Hormonal Contraceptives', 'Hormonal Contraceptives (years)', 'IUD',
+       'IUD (years)', 'STDs', 'STDs (number)', 'STDs:condylomatosis',
+       'STDs:cervical condylomatosis']
+low_weights =['STDs:vaginal condylomatosis',
+       'STDs:vulvo-perineal condylomatosis', 'STDs:syphilis',
+       'STDs:pelvic inflammatory disease', 'STDs:genital herpes',
+       'STDs:molluscum contagiosum', 'STDs:AIDS', 'STDs:HIV',
+       'STDs:Hepatitis B', 'STDs:HPV', 'STDs: Number of diagnosis',
+       'STDs: Time since first diagnosis', 'STDs: Time since last diagnosis',
+       'Dx:Cancer', 'Dx:CIN', 'Dx:HPV', 'Dx', 'Hinselmann', 'Schiller',
+       'Citology', 'Biopsy']
+
+for i in range(len(cols)):
+    if cols[i] in high_weights:
+        weights[i] = 3
+    if cols[i] in med_weights:
+        weights[i] = 2
+    if cols[i] in low_weights:
+        weights[i] = 1
+```
+## Comparison function
+Now that the data is all set up and we have the weights prepared, we can begin with the comparison function.
+![images/compare.png](./images/compare.png)
+
+## Scoring
+
+## Ranking
+
+## Matching

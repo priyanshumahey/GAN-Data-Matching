@@ -115,6 +115,9 @@ We want this comparison function to work differently depending on which column t
 We want the comparison function to change based on the numbers and what is present in that column. For now, we simply use the simple comparison function.
 
 ## Ranking
+The ranking system currently is simply the lowest result from the comparison system. We start off by finding the minimum, which results in showing us the comparison number of the smallest comparison number. Then, we find the index of the value we're looking for and finally use that index to figure out the row of the values we're interested in observing.
+
+
 
 ## Matching
 

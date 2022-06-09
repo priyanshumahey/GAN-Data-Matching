@@ -115,10 +115,19 @@ We want this comparison function to work differently depending on which column t
 We want the comparison function to change based on the numbers and what is present in that column. For now, we simply use the simple comparison function.
 
 ## Ranking
-The ranking system currently is simply the lowest result from the comparison system. We start off by finding the minimum, which results in showing us the comparison number of the smallest comparison number. Then, we find the index of the value we're looking for and finally use that index to figure out the row of the values we're interested in observing.
-
-
+The ranking system currently is simply the lowest result from the comparison system. We start off by finding the minimum, which results in showing us the comparison number of the smallest comparison number. Then, we find the index of the value we're looking for and finally use that index to figure out the row of the values we're interested in observing. 
 
 ## Matching
+By repeating our comparison function and obtaining scores, we can generate a new dataframe that holds all the information. This dataframe has the same number of rows as the synthetic data and then the rows of the old real data become the columns for this new data and the score for their matching being the numbers that correspond to the row of both the synthetic and real data. From here, we can choose the minimum value and that becomes the closest match in this algorithm.
+
+The Gale Shapley part of this algorithm comes once the scores are obtained as instead of doing the smallest scores, we can also implement the Gale Shapley test in order and rank which synthetic data is closest to the specific real columns. 
 
 ## Heatmaps
+The Heatmaps are generated using matplotlib and work based off of the score values. The lightest color and darkest colors for the heatmap depend on the minimum and maximum scores respectively.
+
+
+## Current Issues
+How to deal with missing values
+The scoring metric
+- Hamming error was mentioned
+The error metric

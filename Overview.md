@@ -114,6 +114,29 @@ We want this comparison function to work differently depending on which column t
 
 We want the comparison function to change based on the numbers and what is present in that column. For now, we simply use the simple comparison function.
 
+---
+
+The new comparison function uses pytorch. The function is as follows:
+``` Py
+def compute_distance(df1, df2):
+    
+    ar1 = df1.to_numpy()
+    ar2 = df2.to_numpy()
+    x1 = torch.Tensor(ar1)
+    x2 = torch.Tensor(ar2)
+
+    y1 = x1.unsqueeze(2).expand(x1.size()[0], x1.size()[1], x2.size()[0])
+
+    y2 = x2.unsqueeze(2).expand(x2.size()[0], x2.size()[1], x1.size()[0]).permute(2,1,0)
+
+ 
+    weights = torch.ones(x1.size()[1])
+    
+    Δy = torch.abs(y1-y2)
+    result = torch.matmul(Δy.permute(0,2,1), weights).numpy()
+    return result
+```
+
 ## Ranking
 The ranking system currently is simply the lowest result from the comparison system. We start off by finding the minimum, which results in showing us the comparison number of the smallest comparison number. Then, we find the index of the value we're looking for and finally use that index to figure out the row of the values we're interested in observing. 
 
@@ -124,10 +147,3 @@ The Gale Shapley part of this algorithm comes once the scores are obtained as in
 
 ## Heatmaps
 The Heatmaps are generated using matplotlib and work based off of the score values. The lightest color and darkest colors for the heatmap depend on the minimum and maximum scores respectively.
-
-
-## Current Issues
-How to deal with missing values
-The scoring metric
-- Hamming error was mentioned
-The error metric

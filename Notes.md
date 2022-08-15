@@ -145,11 +145,9 @@ realdata34A = norm(impute(realdata34))
 
 For distance, we will need to create a method to compute the distance. For us, we wanted to create some method of scoring how similar the distances are.
 
-Why we choose this specific distance measurement system
+This specific distance is similar to L1 distance and it is simply choosen in this project due to the fact it is simple to implement and it is an effective method. We do not need a complex metric at the moment but this metric can easily be replaced as needed.
 
-Weights
-
-
+Some categories are more important than others and for that reason, we created a weight option. The weights multiplies into the distance and it is significant as it lets us choose which distances are more important. We can edit the weights and select specific columns that are more important.
 
 ``` py
 def compute_distance(df1, df2):
@@ -182,6 +180,65 @@ tvaeB = compute_distance(realdata34A, tvaeA)
 realvreal = compute_distance(realdataA, realdataA)
 real34vreal34 = compute_distance(realdata34A, realdata34A)
 ```
+
+We make the synthetic datasets smaller, to the size of the real dataset, because it is easier to work with and lets us graph squares.
+
+``` Py
+newSyn = []
+newCt = []
+newGaus = []
+newSynth = []
+newTvae = []
+realT = []
+
+for i in range(858):
+    newSyn.append(syndataB[i][:858].tolist())
+    newCt.append(ctganB[i][:858].tolist())
+    newGaus.append(gauscopB[i][:858].tolist())
+    newSynth.append(synthpopB[i][:858].tolist())
+    newTvae.append(tvaeB[i][:858].tolist())
+    realT.append(realvreal[i][:858].tolist())
+```
+## Heatmaps
+
+We create heatmaps and add a colorbar. The important things to pay attention to is the range of the colorbar. The darker squares are more far apart and the more yellow regions are closer together. 
+
+We should pay special attention to how different the values in real data are from each other. This tells us how far apart real data points can be.
+
+``` Py
+plt.imshow(real34vreal34[:,:858], cmap=mpl.cm.get_cmap('cividis_r'))
+plt.colorbar()
+```
+``` Py
+plt.imshow(realvreal[:,:858], cmap=mpl.cm.get_cmap('cividis_r'))
+plt.colorbar()
+```
+``` Py
+plt.imshow(syndataB[:,:858], cmap=mpl.cm.get_cmap('cividis_r'))
+plt.colorbar()
+```
+``` Py
+plt.imshow(gauscopB[:,:858], cmap=mpl.cm.get_cmap('cividis_r'))
+plt.colorbar()
+```
+``` Py
+plt.imshow(synthpopB[:,:858], cmap=mpl.cm.get_cmap('cividis_r'))
+plt.colorbar()
+```
+``` Py
+plt.imshow(tvaeB[:858,:858], cmap=mpl.cm.get_cmap('cividis_r'))
+plt.colorbar()
+```
+
+## Ranking
+For the ranking system, we will utilize the Gale Shapley algorithm to match and rank the datasets. We use the Gale Shapley algorithm to match one row for the real dataset to one match for the specific synthetic dataset. 
+
+We use the Gale Shapley algorithm due to the fact that it lets us match and choose the closest points. With this, we can see if the synthetic generation algorithm made a point of data that was too close and identifiable.
+
+
+
+
+
 
 
 #### Check the dataframes for the synthetic datasets to make sure the rows are seperate and none of the synthetic patients are the same. Do some writeups in word. Stress the decisions we made and why we did it. Share the graphs sorted (leave out real vs score) and add them all to the same plot.

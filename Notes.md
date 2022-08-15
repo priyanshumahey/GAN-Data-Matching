@@ -235,14 +235,101 @@ For the ranking system, we will utilize the Gale Shapley algorithm to match and 
 
 We use the Gale Shapley algorithm due to the fact that it lets us match and choose the closest points. With this, we can see if the synthetic generation algorithm made a point of data that was too close and identifiable.
 
+For the Gale Shapley algorithm, the fastest one we could find was from matching.algorithms. This library was faster than the one we created from scratch so we ultimately decided to go with this one.
 
+The Gale Shapley algorthim takes in two different dictionaries which indicate the preferences for both datasets. So the first thing we need to is create the dictionary which is done by the `createDict()` function.
 
+``` py
+def createDict(A):
+    s = torch.argsort(torch.Tensor(A),dim=1)
+    d = {}
+    for i in range(len(A)):
+        d[i] = s[i,:].tolist()
+    return d
+```
 
+Then, once we have created the dictionary, we will apply the galeshapley algorithm.
 
+``` py
+newSynM = newSyn
+
+realDict = createDict(newSynM)
+synDict = createDict(torch.tensor(newSynM).T)
+
+matchNewSyn = galeshapley(realDict, synDict)
+```
+
+Now, we also create a graph of the patient vs the score of the match it was paired with.
+
+``` py
+y = []
+for i in range(len(newSyn)):
+    y.append(newSyn[i][matchNewSyn[i]])
+x = np.array([i for i in range(858)])
+
+plt.xlabel('Index of Real Patient') 
+plt.ylabel('Score') 
+plt.title("Real Data vs Score for Syndata")
+
+plt.scatter(x, y)
+plt.show()
+```
+
+## Graphing the Choices
+For the matching algorithm, we would like to see if the final stable match has their first preference, or second, or third, or greater. For this, we create a new graph that color codes and visualizes the final results of the stable pair.
+
+```Py
+dataset_used = newCt
+
+newSynM = dataset_used
+
+realDict = createDict(newSynM)
+synDict = createDict(torch.tensor(newSynM).T)
+matchNewSynM = galeshapley(realDict, synDict)
+
+dictUsed = realDict
+matchUsed = matchNewSynM
+
+y = []
+for i in range(len(dataset_used)):
+    y.append(dataset_used[i][matchNewSynM[i]])
+x = np.array([i for i in range(858)])
+plt.scatter(x, np.sort(y))
+plt.show()
+
+def choiceMap(rank, match):
+    rankNew = rank
+    matchNew = match
+    d = {}
+    for i in range(len(matchNew)):
+        x = matchNew[i]
+        x = rankNew[i].index(x)
+        d[i] = x
+    return d
+
+map = choiceMap(dictUsed, matchUsed)
+plt.scatter(map.keys(), map.values())
+plt.show()
+
+testPlot = map
+X = list(testPlot.keys())
+Y = list(testPlot.values())
+
+color_lst = []
+colors_set = {0:'green', 1:'blue', 2:'yellow', 3:'red', 4:'black'}
+
+for i, j in enumerate(X):
+    if Y[i] <= 3:
+        color_lst.append(Y[i])
+    if Y[i] > 3:
+        color_lst.append(4)
+
+    plt.scatter(X[i], Y[i], color = colors_set.get(color_lst[i], 'black'))
+```
 
 
 #### Check the dataframes for the synthetic datasets to make sure the rows are seperate and none of the synthetic patients are the same. Do some writeups in word. Stress the decisions we made and why we did it. Share the graphs sorted (leave out real vs score) and add them all to the same plot.
 
+
+
 #### Give some thoughts to next steps (especially scores). Reflect on the goals especially.
-
-

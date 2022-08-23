@@ -6,6 +6,8 @@ To run the code from this worklearn, you will be needing the following libraries
 - matplotlib
 - pytorch
 - matching.algorithms
+Pandas is for the data as we want to work with it in Pandas dataframes, numpy is for mathematical operations, matplotlib is for plotting, pytorch is for creating torch tensors to speed up thee code and matching.algorithms contains the gale Shapley algorithm we'd want to use.
+
 
 We will be doing the following import at the start:
 ```py
@@ -38,6 +40,7 @@ realdata34 = pd.read_csv('kag_risk_factors_cervical_cancer.csv')
 realdata34.drop('STDs: Time since first diagnosis', axis=1, inplace=True)
 realdata34.drop('STDs: Time since last diagnosis', axis=1, inplace=True)
 ```
+When we want to compare with any dataset that has 34 columns only, we'd use realdata34. 
 
 ## Data Imputations
 
@@ -46,6 +49,9 @@ In the dataset, we start off with multiple missing values labeled with `?`.
 In the data, there will need to be two different kind of data impuations. First, we may have to replace the missing value with the median value. Second, we may have to replace it with the mode value.
 
 For the columns with continuous values (1,2,3,etc or 1.1,1.2,1.3,etc), we replace the missing values with the median value. Then, for the values that are binary, we use a mode imputation.
+
+For binary data, they are often either mostly 1s or 0s. When there is missing data, depending on the rest of the data, it is either highly likely to be 1 or 0. This means for binary missing data, we figure out what the mode of that column is and use that to replace the rest of the missing data.
+
 
 ``` py
 med34 = ['Age', 'Number of sexual partners', 'First sexual intercourse',
@@ -326,10 +332,3 @@ for i, j in enumerate(X):
 
     plt.scatter(X[i], Y[i], color = colors_set.get(color_lst[i], 'black'))
 ```
-
-
-#### Check the dataframes for the synthetic datasets to make sure the rows are seperate and none of the synthetic patients are the same. Do some writeups in word. Stress the decisions we made and why we did it. Share the graphs sorted (leave out real vs score) and add them all to the same plot.
-
-
-
-#### Give some thoughts to next steps (especially scores). Reflect on the goals especially.
